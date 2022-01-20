@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,12 +7,14 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _particleSystem;
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private Team _enemyTeam;
     [SerializeField] private int _health;
     [SerializeField] private int _damage;
     [SerializeField] private float _attackDuration;
     [SerializeField] private float _hitDistance;
 
     private int _currentHealth;
+    private IReadOnlyList<Unit> _targetList;
     private Unit _target;
 
     public bool IsAlive { get; private set; }
@@ -29,6 +32,7 @@ public class Unit : MonoBehaviour
     private void Awake()
     {
         _currentHealth = _health;
+        _targetList = _enemyTeam.Units;
     }
 
     private void OnEnable()
@@ -63,9 +67,9 @@ public class Unit : MonoBehaviour
         _particleSystem.Play();
     }
 
-    public void Set(Unit target)
+    public void SetTarget()
     {
-        _target = target;
+        _target = FindTarget();
         if(_target == null)
         {
             Waiting?.Invoke();
@@ -83,6 +87,26 @@ public class Unit : MonoBehaviour
     public void StartBattle()
     {
         TargetSearching?.Invoke();
+    }
+
+    private Unit FindTarget()
+    {
+        Unit nearestTarget = null;
+        float distanceToNearestTarget = float.MaxValue;
+
+        for (int i = 0; i < _targetList.Count; i++)
+        {
+            if (_enemyTeam.Units[i].IsAlive == false)
+                continue;
+
+            float distanceToTarget = Vector3.Distance(transform.position, _targetList[i].transform.position);
+            if (distanceToTarget < distanceToNearestTarget)
+            {
+                nearestTarget = _targetList[i];
+                distanceToNearestTarget = distanceToTarget;
+            }
+        }
+        return nearestTarget;
     }
 
     private void OnTargetDied()

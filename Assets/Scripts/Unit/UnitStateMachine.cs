@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UnitStateMachine : MonoBehaviour
 {
-    [SerializeField] private Team _enemyTeam;
     [SerializeField] private Unit _unit;
 
     private Dictionary<Type, IUnitState> _statesMap;
@@ -37,7 +36,7 @@ public class UnitStateMachine : MonoBehaviour
         _statesMap = new Dictionary<Type, IUnitState>();
 
         _statesMap[typeof(WaitingState)] = new WaitingState(_unit);
-        _statesMap[typeof(TargetSearchState)] = new TargetSearchState(_unit, _enemyTeam.Units);
+        _statesMap[typeof(TargetSearchState)] = new TargetSearchState(_unit);
         _statesMap[typeof(MovementState)] = new MovementState(_unit);
         _statesMap[typeof(FightingState)] = new FightingState(_unit);
     }
