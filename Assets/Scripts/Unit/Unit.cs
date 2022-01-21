@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem _particleSystem;
+    [SerializeField] private Animator _animator;
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private Team _enemyTeam;
     [SerializeField] private int _health;
@@ -20,6 +20,7 @@ public class Unit : MonoBehaviour
     public bool IsAlive { get; private set; }
     public float AttackDuration => _attackDuration;
     public float HitDistance => _hitDistance;
+    public Animator Animator => _animator;
     public Unit Target => _target;
     public NavMeshAgent Agent => _agent;
 
@@ -56,7 +57,7 @@ public class Unit : MonoBehaviour
             IsAlive = false;
             Died?.Invoke();
 
-            gameObject.SetActive(false); // Для теста, потом удалить или включить метод обработки "умерания"(Анимация и тд)
+            _animator.SetTrigger(UnitAnimator.Die);
         }
     }
 
@@ -64,7 +65,6 @@ public class Unit : MonoBehaviour
     {
         if (_target != null)
             _target.TakeDamage(_damage);
-        _particleSystem.Play();
     }
 
     public void SetTarget()
@@ -113,5 +113,10 @@ public class Unit : MonoBehaviour
     {
         _target.Died -= OnTargetDied;
         TargetSearching?.Invoke();
+    }
+
+    private void HandleDieAnimation()
+    {
+        gameObject.SetActive(false);
     }
 }

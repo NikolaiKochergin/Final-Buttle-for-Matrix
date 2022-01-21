@@ -13,10 +13,12 @@ public class FightingState : IUnitState
     public void Enter()
     {
         _timeToAttack = 0;
+        _unit.Animator.SetTrigger(UnitAnimator.Attack);
     }
 
     public void Exit()
     {
+        _unit.Animator.ResetTrigger(UnitAnimator.Attack);
     }
 
     public void Update()

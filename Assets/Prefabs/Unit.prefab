@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 3436121833781191302}
   - component: {fileID: 5750130432052125762}
   - component: {fileID: 1971042952}
+  - component: {fileID: -7612879482274223736}
   - component: {fileID: 490470920939753355}
   - component: {fileID: 1472322954871735960}
   m_Layer: 0
-  m_Name: Unit Green
+  m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +47,7 @@ NavMeshAgent:
   m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 1
-  m_Speed: 1
+  m_Speed: 5
   m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -74,6 +75,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!95 &-7612879482274223736
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3436121833781191304}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d14352aadfefe8647b87844ff3ad4b52, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &490470920939753355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,8 +106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab7a6bce0474cf4e972f7ca10aa76a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _particleSystem: {fileID: 222326177790863455}
+  _animator: {fileID: -7612879482274223736}
   _agent: {fileID: 5750130432052125762}
+  _enemyTeam: {fileID: 0}
   _health: 50
   _damage: 10
   _attackDuration: 1
@@ -104,7 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4743d1308f839394990582c31fb74e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyTeam: {fileID: 0}
   _unit: {fileID: 490470920939753355}
 --- !u!1 &3436121834029457438
 GameObject:
@@ -267,7 +287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2119475737326277304
 Transform:
   m_ObjectHideFlags: 0
@@ -296,9 +316,9 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 0
+  looping: 1
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -1115,7 +1135,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 0
       minScalar: 10
       maxCurve:
         serializedVersion: 2

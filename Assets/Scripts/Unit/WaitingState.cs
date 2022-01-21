@@ -11,10 +11,12 @@ public class WaitingState : IUnitState
 
     public void Enter()
     {
+        _unit.Animator.SetTrigger(UnitAnimator.Idle);
     }
 
     public void Exit()
     {
+        _unit.Animator.ResetTrigger(UnitAnimator.Idle);
     }
 
     public void Update()

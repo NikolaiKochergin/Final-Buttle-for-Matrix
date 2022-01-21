@@ -12,11 +12,13 @@ public class MovementState : IUnitState
     public void Enter()
     {
         _unit.Agent.enabled = true;
+        _unit.Animator.SetTrigger(UnitAnimator.Move);
     }
 
     public void Exit()
     {
         _unit.Agent.enabled = false;
+        _unit.Animator.ResetTrigger(UnitAnimator.Move);
     }
 
     public void Update()
