@@ -24,11 +24,11 @@ public class Unit : MonoBehaviour
     public Unit Target => _target;
     public NavMeshAgent Agent => _agent;
 
-    public event Action Died;
+    public event Action Waiting;
     public event Action TargetSearching;
     public event Action TargetAssigned;
     public event Action Fight;
-    public event Action Waiting;
+    public event Action Died;
 
     private void Awake()
     {
@@ -44,9 +44,11 @@ public class Unit : MonoBehaviour
     private void OnDisable()
     {
         IsAlive = false;
+        if (_target != null)
+            _target.Died -= OnTargetDied;
     }
 
-    public void TakeDamage(int damage)
+    public void Take(int damage)
     {
         if (damage < _currentHealth)
         {
@@ -64,7 +66,7 @@ public class Unit : MonoBehaviour
     public void HitTarget()
     {
         if (_target != null)
-            _target.TakeDamage(_damage);
+            _target.Take(_damage);
     }
 
     public void SetTarget()
@@ -96,7 +98,7 @@ public class Unit : MonoBehaviour
 
         for (int i = 0; i < _targetList.Count; i++)
         {
-            if (_enemyTeam.Units[i].IsAlive == false)
+            if (_targetList[i].IsAlive == false)
                 continue;
 
             float distanceToTarget = Vector3.Distance(transform.position, _targetList[i].transform.position);
