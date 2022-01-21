@@ -21,6 +21,7 @@ public class UnitStateMachine : MonoBehaviour
         _unit.TargetSearching += SetTargetSearchState;
         _unit.TargetAssigned += SetMovementState;
         _unit.Fight += SetFightingState;
+        _unit.Died += SetDiedState;
     }
 
     private void OnDisable()
@@ -29,6 +30,7 @@ public class UnitStateMachine : MonoBehaviour
         _unit.TargetSearching -= SetTargetSearchState;
         _unit.TargetAssigned -= SetMovementState;
         _unit.Fight -= SetFightingState;
+        _unit.Died -= SetDiedState;
     }
 
     private void InitStates()
@@ -39,6 +41,7 @@ public class UnitStateMachine : MonoBehaviour
         _statesMap[typeof(TargetSearchState)] = new TargetSearchState(_unit);
         _statesMap[typeof(MovementState)] = new MovementState(_unit);
         _statesMap[typeof(FightingState)] = new FightingState(_unit);
+        _statesMap[typeof(DiedState)] = new DiedState(_unit);
     }
 
     public void SetWaitingState()
@@ -62,6 +65,12 @@ public class UnitStateMachine : MonoBehaviour
     public void SetFightingState()
     {
         var state = GetState<FightingState>();
+        Set(state);
+    }
+
+    public void SetDiedState()
+    {
+        var state = GetState<DiedState>();
         Set(state);
     }
 

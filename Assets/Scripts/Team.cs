@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Team : MonoBehaviour
 {
-    [SerializeField] private Text _winText;
     [SerializeField] private Team _enemyTeam;
     [SerializeField] private List<Unit> _units;    
 
@@ -22,26 +20,21 @@ public class Team : MonoBehaviour
         _units.AddRange(GetComponentsInChildren<Unit>());
     }
 
-    private void Update()
-    {
-        if (CheckWin())
-            _winText.gameObject.SetActive(true);
-
-    }
-
     public void StartBattle()
     {
         foreach (var unit in _units)
+        {
+            unit.Initialize(_enemyTeam.Units);
             unit.StartBattle();
+        }
     }
 
-    private bool CheckWin()
+    public void ExecuteTeam()
     {
+        foreach(var unit in _units)
+            unit.SetDie();
+
         foreach(var unit in _enemyTeam.Units)
-        {
-            if(unit.IsAlive == true)
-                return false;
-        }
-        return true;
+            unit.SetWaiting();
     }
 }
