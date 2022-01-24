@@ -48,7 +48,7 @@ public class Unit : MonoBehaviour
             _target.Died -= OnTargetDied;
     }
 
-    public void Take(int damage)
+    private void Take(int damage)
     {
         if (damage < _currentHealth)
         {
@@ -72,11 +72,12 @@ public class Unit : MonoBehaviour
     public void SetTarget()
     {
         _target = FindTarget();
-        if(_target == null)
+        if (_target == null)
         {
             Waiting?.Invoke();
             return;
         }
+
         _target.Died += OnTargetDied;
         TargetAssigned?.Invoke();
     }
@@ -94,20 +95,19 @@ public class Unit : MonoBehaviour
     private Unit FindTarget()
     {
         Unit nearestTarget = null;
-        float distanceToNearestTarget = float.MaxValue;
+        var distanceToNearestTarget = float.MaxValue;
 
-        for (int i = 0; i < _targetList.Count; i++)
+        foreach (var target in _targetList)
         {
-            if (_targetList[i].IsAlive == false)
+            if (target.IsAlive == false)
                 continue;
 
-            float distanceToTarget = Vector3.Distance(transform.position, _targetList[i].transform.position);
-            if (distanceToTarget < distanceToNearestTarget)
-            {
-                nearestTarget = _targetList[i];
-                distanceToNearestTarget = distanceToTarget;
-            }
+            var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+            if (distanceToTarget > distanceToNearestTarget) continue;
+            nearestTarget = target;
+            distanceToNearestTarget = distanceToTarget;
         }
+
         return nearestTarget;
     }
 

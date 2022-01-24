@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MovementState : IUnitState
 {
-    private Unit _unit;
+    private readonly Unit _unit;
 
     public MovementState(Unit unit)
     {
@@ -11,6 +11,7 @@ public class MovementState : IUnitState
 
     public void Enter()
     {
+        _unit.transform.LookAt(_unit.Target.transform.position);
         _unit.Agent.enabled = true;
         _unit.Animator.SetTrigger(UnitAnimator.Move);
     }

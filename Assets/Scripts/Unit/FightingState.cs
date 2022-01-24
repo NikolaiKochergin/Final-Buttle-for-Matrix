@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FightingState : IUnitState
 {
-    private Unit _unit;
+    private readonly Unit _unit;
     private float _timeToAttack;
 
     public FightingState(Unit unit)
@@ -12,7 +12,8 @@ public class FightingState : IUnitState
 
     public void Enter()
     {
-        _timeToAttack = 0;
+        _timeToAttack = _unit.AttackDuration;
+        _unit.transform.LookAt(_unit.Target.transform.position);
         _unit.Animator.SetTrigger(UnitAnimator.Attack);
     }
 
