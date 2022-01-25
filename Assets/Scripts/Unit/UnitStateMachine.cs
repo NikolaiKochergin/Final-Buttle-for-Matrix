@@ -96,9 +96,9 @@ public class UnitStateMachine : MonoBehaviour
         return _statesMap[type];
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_currentState != null)
-            _currentState.Update();
+            _currentState.FixedUpdate();
     }
 }

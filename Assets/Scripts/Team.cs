@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class Team : MonoBehaviour
 {
-    [SerializeField] private List<Unit> _units;    
+    [SerializeField] private List<Unit> _units;
 
     public IReadOnlyList<Unit> Units => _units;
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         _units.Clear();
@@ -18,6 +19,7 @@ public class Team : MonoBehaviour
         _units.Clear();
         _units.AddRange(GetComponentsInChildren<Unit>());
     }
+#endif
 
     public bool CheckLose()
     {

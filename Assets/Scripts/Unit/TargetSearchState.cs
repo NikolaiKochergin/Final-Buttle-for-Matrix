@@ -16,7 +16,7 @@ public class TargetSearchState : IUnitState
     {
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
     }
 }

@@ -17,7 +17,7 @@ public class WaitingState : IUnitState
         _unit.Animator.ResetTrigger(UnitAnimator.Taunt);
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
     }
 }

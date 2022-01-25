@@ -17,7 +17,7 @@
         _unit.Animator.ResetTrigger(UnitAnimator.Die);
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
     }
 }

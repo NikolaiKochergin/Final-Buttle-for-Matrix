@@ -11,7 +11,6 @@ public class MovementState : IUnitState
 
     public void Enter()
     {
-        _unit.transform.LookAt(_unit.Target.transform.position);
         _unit.Agent.enabled = true;
         _unit.Animator.SetTrigger(UnitAnimator.Run);
     }
@@ -22,9 +21,10 @@ public class MovementState : IUnitState
         _unit.Animator.ResetTrigger(UnitAnimator.Run);
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         _unit.Agent.SetDestination(_unit.Target.transform.position);
+        
         if (Vector3.Distance(_unit.transform.position, _unit.Target.transform.position) < _unit.HitDistance)
             _unit.StartFighting();
     }
