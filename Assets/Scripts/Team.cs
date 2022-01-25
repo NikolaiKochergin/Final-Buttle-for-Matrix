@@ -1,11 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Team : MonoBehaviour
 {
-    [SerializeField] private Text _winText;
-    [SerializeField] private Team _enemyTeam;
     [SerializeField] private List<Unit> _units;    
 
     public IReadOnlyList<Unit> Units => _units;
@@ -22,26 +19,14 @@ public class Team : MonoBehaviour
         _units.AddRange(GetComponentsInChildren<Unit>());
     }
 
-    private void Update()
-    {
-        if (CheckWin())
-            _winText.gameObject.SetActive(true);
-
-    }
-
-    public void StartBattle()
+    public bool CheckLose()
     {
         foreach (var unit in _units)
-            unit.StartBattle();
-    }
-
-    private bool CheckWin()
-    {
-        foreach(var unit in _enemyTeam.Units)
         {
-            if(unit.IsAlive == true)
+            if (unit.IsAlive)
                 return false;
         }
+
         return true;
     }
 }

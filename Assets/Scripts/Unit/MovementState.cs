@@ -13,13 +13,13 @@ public class MovementState : IUnitState
     {
         _unit.transform.LookAt(_unit.Target.transform.position);
         _unit.Agent.enabled = true;
-        _unit.Animator.SetTrigger(UnitAnimator.Move);
+        _unit.Animator.SetTrigger(UnitAnimator.Run);
     }
 
     public void Exit()
     {
         _unit.Agent.enabled = false;
-        _unit.Animator.ResetTrigger(UnitAnimator.Move);
+        _unit.Animator.ResetTrigger(UnitAnimator.Run);
     }
 
     public void Update()

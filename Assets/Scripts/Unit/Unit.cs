@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] private Animator _animator;
+    [SerializeField] private Animator _jenkinsAnimator;
+    [SerializeField] private Animator _neoAnimator;
     [SerializeField] private NavMeshAgent _agent;
-    [SerializeField] private Team _enemyTeam;
     [SerializeField] private int _health;
     [SerializeField] private int _damage;
     [SerializeField] private float _attackDuration;
@@ -16,11 +16,12 @@ public class Unit : MonoBehaviour
     private int _currentHealth;
     private IReadOnlyList<Unit> _targetList;
     private Unit _target;
+    private Animator _currentAnimator;
 
     public bool IsAlive { get; private set; }
     public float AttackDuration => _attackDuration;
     public float HitDistance => _hitDistance;
-    public Animator Animator => _animator;
+    public Animator Animator => _currentAnimator;
     public Unit Target => _target;
     public NavMeshAgent Agent => _agent;
 
@@ -30,10 +31,17 @@ public class Unit : MonoBehaviour
     public event Action Fight;
     public event Action Died;
 
+    public void Initialization(IReadOnlyList<Unit> enemies)
+    {
+        if (enemies == null)
+            throw new ArgumentNullException("Unit is not initialized by enemies.");
+        _currentHealth = _health;
+        _targetList = enemies;
+    }
+
     private void Awake()
     {
-        _currentHealth = _health;
-        _targetList = _enemyTeam.Units;
+        SetNeoAvatar();
     }
 
     private void OnEnable()
@@ -48,7 +56,21 @@ public class Unit : MonoBehaviour
             _target.Died -= OnTargetDied;
     }
 
-    private void Take(int damage)
+    public void SetNeoAvatar()
+    {
+        _currentAnimator = _neoAnimator;
+        _jenkinsAnimator.gameObject.SetActive(false);
+        _neoAnimator.gameObject.SetActive(true);
+    }
+
+    public void SetJenkinsAvatar()
+    {
+        _currentAnimator = _jenkinsAnimator;
+        _neoAnimator.gameObject.SetActive(false);
+        _jenkinsAnimator.gameObject.SetActive(true);
+    }
+
+    public void Take(int damage)
     {
         if (damage < _currentHealth)
         {
@@ -57,9 +79,8 @@ public class Unit : MonoBehaviour
         else
         {
             IsAlive = false;
+            _target.Died -= OnTargetDied;
             Died?.Invoke();
-
-            _animator.SetTrigger(UnitAnimator.Die);
         }
     }
 
@@ -103,9 +124,11 @@ public class Unit : MonoBehaviour
                 continue;
 
             var distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
-            if (distanceToTarget > distanceToNearestTarget) continue;
-            nearestTarget = target;
-            distanceToNearestTarget = distanceToTarget;
+            if (distanceToTarget < distanceToNearestTarget)
+            {
+                nearestTarget = target;
+                distanceToNearestTarget = distanceToTarget;
+            }
         }
 
         return nearestTarget;
@@ -115,10 +138,5 @@ public class Unit : MonoBehaviour
     {
         _target.Died -= OnTargetDied;
         TargetSearching?.Invoke();
-    }
-
-    private void HandleDieAnimation()
-    {
-        gameObject.SetActive(false);
     }
 }

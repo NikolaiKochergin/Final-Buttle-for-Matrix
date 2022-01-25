@@ -12,14 +12,14 @@ public class FightingState : IUnitState
 
     public void Enter()
     {
-        _timeToAttack = _unit.AttackDuration;
+        _timeToAttack = 0f;
         _unit.transform.LookAt(_unit.Target.transform.position);
-        _unit.Animator.SetTrigger(UnitAnimator.Attack);
+        _unit.Animator.SetTrigger(UnitAnimator.Fight);
     }
 
     public void Exit()
     {
-        _unit.Animator.ResetTrigger(UnitAnimator.Attack);
+        _unit.Animator.ResetTrigger(UnitAnimator.Fight);
     }
 
     public void Update()

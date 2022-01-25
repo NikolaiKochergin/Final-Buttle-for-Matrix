@@ -1,8 +1,6 @@
-using UnityEngine;
-
 public class WaitingState : IUnitState
 {
-    private Unit _unit;
+    private readonly Unit _unit;
 
     public WaitingState(Unit unit)
     {
@@ -11,12 +9,12 @@ public class WaitingState : IUnitState
 
     public void Enter()
     {
-        _unit.Animator.SetTrigger(UnitAnimator.Idle);
+        _unit.Animator.SetTrigger(UnitAnimator.Taunt);
     }
 
     public void Exit()
     {
-        _unit.Animator.ResetTrigger(UnitAnimator.Idle);
+        _unit.Animator.ResetTrigger(UnitAnimator.Taunt);
     }
 
     public void Update()

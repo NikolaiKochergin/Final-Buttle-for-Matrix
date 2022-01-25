@@ -9,7 +9,9 @@ public class UnitStateMachine : MonoBehaviour
     private Dictionary<Type, IUnitState> _statesMap;
     private IUnitState _currentState;
 
-    private void Awake()
+    public Unit Unit => _unit;
+
+    private void Start()
     {
         InitStates();
         SetStateByDefault();
@@ -21,6 +23,7 @@ public class UnitStateMachine : MonoBehaviour
         _unit.TargetSearching += SetTargetSearchState;
         _unit.TargetAssigned += SetMovementState;
         _unit.Fight += SetFightingState;
+        _unit.Died += SetDieState;
     }
 
     private void OnDisable()
@@ -29,6 +32,7 @@ public class UnitStateMachine : MonoBehaviour
         _unit.TargetSearching -= SetTargetSearchState;
         _unit.TargetAssigned -= SetMovementState;
         _unit.Fight -= SetFightingState;
+        _unit.Died -= SetDieState;
     }
 
     private void InitStates()
@@ -39,6 +43,7 @@ public class UnitStateMachine : MonoBehaviour
         _statesMap[typeof(TargetSearchState)] = new TargetSearchState(_unit);
         _statesMap[typeof(MovementState)] = new MovementState(_unit);
         _statesMap[typeof(FightingState)] = new FightingState(_unit);
+        _statesMap[typeof(DieState)] = new DieState(_unit);
     }
 
     public void SetWaitingState()
@@ -62,6 +67,12 @@ public class UnitStateMachine : MonoBehaviour
     public void SetFightingState()
     {
         var state = GetState<FightingState>();
+        Set(state);
+    }
+
+    public void SetDieState()
+    {
+        var state = GetState<DieState>();
         Set(state);
     }
 
