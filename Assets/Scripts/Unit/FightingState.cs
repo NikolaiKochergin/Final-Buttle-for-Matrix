@@ -24,11 +24,11 @@ public class FightingState : IUnitState
 
     public void FixedUpdate()
     {
-        if (_timeToAttack <= 0)
-        {
-            _unit.HitTarget();
-            _timeToAttack = _unit.AttackDuration;
-        }
-        _timeToAttack -= Time.deltaTime;
+        // if (_timeToAttack <= 0)
+        // {
+        //     _unit.HitTarget();
+        //     _timeToAttack = _unit.AttackDuration;
+        // }
+        // _timeToAttack -= Time.deltaTime;
     }
 }

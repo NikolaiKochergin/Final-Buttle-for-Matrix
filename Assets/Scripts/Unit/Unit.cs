@@ -8,6 +8,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private Animator _jenkinsAnimator;
     [SerializeField] private Animator _neoAnimator;
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private NavMeshObstacle _meshObstacle;
     [SerializeField] private int _health;
     [SerializeField] private int _damage;
     [SerializeField] private float _attackDuration;
@@ -52,6 +53,7 @@ public class Unit : MonoBehaviour
     private void OnDisable()
     {
         IsAlive = false;
+        _meshObstacle.enabled = true;
         if (_target != null)
             _target.Died -= OnTargetDied;
     }
@@ -72,6 +74,7 @@ public class Unit : MonoBehaviour
 
     public void Take(int damage)
     {
+        _currentAnimator.SetTrigger(UnitAnimator.TakeDamage);
         if (damage < _currentHealth)
         {
             _currentHealth -= damage;
@@ -79,7 +82,9 @@ public class Unit : MonoBehaviour
         else
         {
             IsAlive = false;
-            _target.Died -= OnTargetDied;
+            _meshObstacle.enabled = false;
+            if (_target != null)
+                _target.Died -= OnTargetDied;
             Died?.Invoke();
         }
     }

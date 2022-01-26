@@ -5,4 +5,5 @@ public static class UnitAnimator
     public const string Fight = "Fight";
     public const string Die = "Die";
     public const string Jump = "Jump";
+    public const string TakeDamage = "TakeDamage";
 }
