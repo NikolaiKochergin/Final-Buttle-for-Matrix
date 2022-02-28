@@ -1,5 +1,7 @@
 # Final-Buttle-for-Matrix
 
+Project to complete Matrix final buttle
+
 UnitStatMachine:
 Отвечает за переключение состояний юнита через вызовы методов Ser<>State
 В самих State вызываются методы юнита необходимые для данного состояния в Enter при входе в состояние Exite при выходе из состояния 
